@@ -111,4 +111,15 @@ Developed an interactive Power BI dashboard (`power_bi/healthcare_data.pbix`) wi
 
 ---
 
-## Repository Structure
+### Data Dictionary
+
+| Column | Description |
+|---|---|
+| age | Patient's age |
+| age_group | Categorized age bracket (Young Adult, Senior, etc.) |
+| gender | Patient's gender |
+| priority | Appointment urgency level (Low/Medium/High) |
+| reason_for_visit | Purpose of appointment (Consultation, Therapy, etc.) |
+| treatment_type | Type of treatment given (X-Ray, MRI, ECG, Physiotherapy) |
+| lead_time_days | Days between registration and appointment date |
+| target | Whether the patient no-showed (1) or attended (0) |
