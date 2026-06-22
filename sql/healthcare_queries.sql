@@ -486,7 +486,7 @@ WITH treatment_revenue AS
     SELECT
         treatment_type,
         SUM(amount) AS revenue
-    FROM healthcare_master
+    FROM healthcare_masters
     GROUP BY treatment_type
 )
 SELECT *,
