@@ -38,16 +38,20 @@ Patient no-shows are a major operational and financial challenge for healthcare 
 ## Project Workflow
 
 ### 1. Data Collection & Integration
-Collected and integrated patient, appointment, treatment, and billing datasets into a unified PostgreSQL analytics database.
+
+Collected four raw datasets — `patients`, `appointments`, `treatments`, and `billing` — and merged them into a single PostgreSQL analytics table (`healthcare_master`).
 
 ### 2. Data Cleaning & Preprocessing (`notebook/data_cleaning.ipynb`)
-- Handled missing values and inconsistent records
-- Removed duplicate entries and corrected data formats
-- Engineered features: `bmi_category`, `risk_score`, `risk_level`
-- Engineered `lead_time_days` (days between registration and appointment date)
+
+- Cleaned each raw dataset individually: handled missing values, removed duplicates, fixed date types
+- Engineered `age` and `age_group` from `date_of_birth` (patients)
+- Engineered `cost_category` from treatment cost, and `bill_category` from billing amount
+- Merged `patients` → `appointments` → `treatments` → `billing` into a single `healthcare_master.csv`
+- Ran sanity checks (no-show rate, total revenue) on the merged table before saving
 
 ### 3. SQL-Based Data Analysis (`sql/healthcare_queries.sql`)
-Advanced PostgreSQL queries covering:
+
+Advanced PostgreSQL queries organized into clear sections:
 - Patient demographics and age group analysis
 - Appointment trends, attendance patterns, and no-show behavior
 - Treatment performance and revenue/billing analysis
@@ -73,15 +77,23 @@ Advanced PostgreSQL queries covering:
 | Random Forest (5-fold CV) | Final honest estimate | 0.625 ± 0.047 | — | — | — |
 
 #### ⚠️ Key Finding — Data Leakage Detection
+
 Feature importance analysis revealed `priority` (Low/Medium) as the dominant predictor. Investigation confirmed that `priority = Low/Medium` perfectly predicted `no-show = 0` in 100% of cases — **data leakage**, not a genuine signal. After removing this feature, accuracy dropped from an inflated 77.5% to an honest ~62.5%, reflecting true predictive power on legitimate features.
 
+#### Feature Engineering — Lead Time
+
+`lead_time_days` (days between appointment registration and the appointment date) was engineered directly in `ML_work.ipynb` and tested as a predictive feature.
+
 #### Statistical Validation
+
 Chi-square test on `reason_for_visit` vs. no-show: χ² = 6.24, **p = 0.182** — not statistically significant at the 5% level.
 
 #### Patient Risk Segmentation
+
 K-Means clustering (k=3) segmented patients into Low, Medium, and High Risk groups. PCA-based 2D visualization confirmed reasonable cluster separation.
 
 ### 5. Power BI Dashboard (`power_bi/healthcare_data.pbix`)
+
 6-page interactive dashboard:
 - Executive Dashboard
 - Patient Analytics
@@ -120,15 +132,13 @@ healthcare-analytics-project/
 ├── power_bi/
 │   └── healthcare_data.pbix # Interactive Power BI file
 ├── data/
-│   ├── cleaned/             # Cleaned, processed datasets
-│   └── raw_data/            # Raw datasets (large files excluded via .gitignore)
+│   ├── cleaned/             # Cleaned, processed datasets (healthcare_master.csv, etc.)
+│   └── raw_data/            # Raw datasets (excluded via .gitignore)
 ├── notebook/
-│   ├── data_cleaning.ipynb  # Data cleaning & feature engineering
-│   ├── analysis.ipynb       # EDA & SQL-based analysis
+│   ├── data_cleaning.ipynb  # Cleans & merges patients/appointments/treatments/billing
 │   └── ML_work.ipynb        # ML modeling, evaluation & segmentation
 ├── sql/
 │   └── healthcare_queries.sql
-├── sql_outputs/             # SQL query results
 ├── .gitignore
 ├── requirements.txt
 ├── LICENSE
@@ -148,7 +158,7 @@ cd healthcare-analytics-project
 pip install -r requirements.txt
 
 # 3. Run notebooks in order
-#    data_cleaning.ipynb → analysis.ipynb → ML_work.ipynb
+#    data_cleaning.ipynb → ML_work.ipynb
 
 # 4. For SQL: open sql/healthcare_queries.sql in pgAdmin (PostgreSQL) and run with F5
 
@@ -161,17 +171,19 @@ pip install -r requirements.txt
 
 | Column | Description |
 |---|---|
-| patient_id_x | Unique patient identifier |
+| patient_id | Unique patient identifier |
 | age | Patient age in years |
-| age_group | Age bracket (Young Adult / Middle Age / Senior) |
+| age_group | Age bracket (Child / Young Adult / Middle Age / Senior) |
 | gender | Patient gender (M/F) |
 | priority | Appointment urgency level (Low / Medium / High) |
 | reason_for_visit | Visit purpose (Consultation / Therapy / Follow-up / Emergency) |
 | treatment_type | Treatment received (X-Ray / MRI / ECG / Physiotherapy / Chemotherapy) |
 | cost | Treatment cost |
+| cost_category | Low / Medium / High Cost bucket for treatment cost |
 | amount | Billing amount |
+| bill_category | Low / Medium / High bucket for billing amount |
 | payment_status | Paid or Pending |
-| lead_time_days | Days between registration and appointment (engineered feature) |
+| lead_time_days | Days between registration and appointment (engineered in ML_work.ipynb) |
 | target | No-show outcome — 1 = No-Show, 0 = Attended |
 | Patient_Segment | K-Means label (Low / Medium / High Risk) |
 
