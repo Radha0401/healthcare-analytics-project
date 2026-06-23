@@ -121,12 +121,14 @@ healthcare-analytics-project/
 │   └── healthcare_data.pbix # Interactive Power BI file
 ├── data/
 │   ├── cleaned/             # Cleaned, processed datasets
-│   └── raw_data/            # Raw datasets (excluded via .gitignore)
+│   └── raw_data/            # Raw datasets (large files excluded via .gitignore)
 ├── notebook/
 │   ├── data_cleaning.ipynb  # Data cleaning & feature engineering
+│   ├── analysis.ipynb       # EDA & SQL-based analysis
 │   └── ML_work.ipynb        # ML modeling, evaluation & segmentation
 ├── sql/
 │   └── healthcare_queries.sql
+├── sql_outputs/             # SQL query results
 ├── .gitignore
 ├── requirements.txt
 ├── LICENSE
@@ -146,7 +148,7 @@ cd healthcare-analytics-project
 pip install -r requirements.txt
 
 # 3. Run notebooks in order
-#    data_cleaning.ipynb → ML_work.ipynb
+#    data_cleaning.ipynb → analysis.ipynb → ML_work.ipynb
 
 # 4. For SQL: open sql/healthcare_queries.sql in pgAdmin (PostgreSQL) and run with F5
 
