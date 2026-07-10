@@ -1,0 +1,11 @@
+doctor_id,first_name,last_name,specialization,department,years_experience,contact_number,email
+D001,Anil,Sharma,Oncology,Oncology,5,9800000111,dr.anil.sharma@cityhospital.com
+D002,Sunita,Verma,Cardiology,Cardiology,8,9800000222,dr.sunita.verma@cityhospital.com
+D003,Rakesh,Gupta,Radiology,Radiology,11,9800000333,dr.rakesh.gupta@cityhospital.com
+D004,Priya,Nair,Physiotherapy,Physiotherapy,14,9800000444,dr.priya.nair@cityhospital.com
+D005,Vikram,Iyer,Radiology,Radiology,17,9800000555,dr.vikram.iyer@cityhospital.com
+D006,Meena,Khan,General Medicine,General,20,9800000666,dr.meena.khan@cityhospital.com
+D007,Arjun,Reddy,Orthopedics,Orthopedics,3,9800000777,dr.arjun.reddy@cityhospital.com
+D008,Kavita,Chatterjee,Neurology,Neurology,6,9800000888,dr.kavita.chatterjee@cityhospital.com
+D009,Rohit,Bose,Pediatrics,Pediatrics,9,9800000999,dr.rohit.bose@cityhospital.com
+D010,Neha,Malhotra,Dermatology,Dermatology,12,9800001110,dr.neha.malhotra@cityhospital.com
